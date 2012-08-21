@@ -21,7 +21,7 @@ class Pep8Command(Command):
             sys.exit(1)
 
         cwd = os.getcwd()
-        retcode = call(('pep8 %s/libcloud/' %
+        retcode = call(('pep8 %s/txKeystone/' %
                 (cwd)).split(' '))
         sys.exit(retcode)
 
