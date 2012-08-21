@@ -137,5 +137,6 @@ class KeystoneAgentTests(TestCase, FakeReactorAndConnectMixin):
             agent,
             'GET',
             'https://compute.api',
-            Headers({'x-tenant-id': ['tenantId'], 'x-auth-token': ['authToken']}),
+            Headers({'x-tenant-id': ['tenantId'],
+                     'x-auth-token': ['authToken']}),
             None)
