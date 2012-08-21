@@ -36,6 +36,7 @@ setup(
     description='A Twisted Agent implementation which authenticates' +
                 ' to Keystone and uses the Keystone auth credentials' +
                 ' to authenticate against requested urls.',
+    author='Rackspace Hosting, Inc.',
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: Apache Software License',
