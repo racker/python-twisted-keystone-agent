@@ -3,10 +3,8 @@ import json
 
 from cStringIO import StringIO
 from Queue import Queue
-from twisted.internet import reactor
 from twisted.internet.defer import Deferred, succeed, fail
 from twisted.internet.protocol import Protocol
-from twisted.internet.error import ConnectionLost, ConnectionDone, ConnectError
 from twisted.web.client import FileBodyProducer
 from twisted.web.http_headers import Headers
 from twisted.python import log
@@ -71,7 +69,7 @@ class KeystoneAgent(object):
             self.msg("_handleResponse (%(method)s): %(uri)s",
                      method=method, uri=uri, depth=depth)
 
-            if response.code == 401:
+            if response.code == httplib.UNAUTHORIZED:
                 #The auth headers were not accepted, force an update and
                 # recurse
                 self.auth_headers = \
@@ -89,7 +87,7 @@ class KeystoneAgent(object):
 
         def _makeRequest(auth_headers):
             self.msg("_makeRequest %(auth_headers)s (%(method)s): %(uri)s",
-                     auth_headers=auth_header, smethod=method, uri=uri)
+                     auth_headers=auth_headers, method=method, uri=uri)
 
             for header, value in auth_headers.items():
                 headers.setRawHeaders(header, [value])
@@ -155,11 +153,11 @@ class KeystoneAgent(object):
 
             except ValueError as e:
                 # We received a bad response
-                return fail(MalformedJSONError("Malformed keystone"
-                                               "response received"))
+                return fail(MalformedJSONError(
+                    "Malformed keystone response received: " + e))
 
         def _handleAuthResponse(response):
-            if response.code == 200:
+            if response.code == httplib.OK:
                 self.msg("_handleAuthResponse: %(response)s accepted",
                          response=response)
                 body = Deferred()
