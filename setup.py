@@ -12,29 +12,8 @@ except ImportError:
     has_epydoc = False
 
 
-class ApiDocsCommand(Command):
-    description = "generate API documentation"
-    user_options = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def run(self):
-        if not has_epydoc:
-            raise RuntimeError('Missing "epydoc" package!')
-
-        os.system(
-            'pydoctor'
-            ' --add-package=txKeystone'
-            ' --project-name=txKeystone'
-        )
-
-
 class Pep8Command(Command):
-    description = "run pep8 script"
+    description = "Run pep8 script"
     user_options = []
 
     def initialize_options(self):
@@ -57,6 +36,41 @@ class Pep8Command(Command):
         sys.exit(retcode)
 
 
+class ApiDocsCommand(Command):
+    description = "generate API documentation"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        if not has_epydoc:
+            raise RuntimeError('Missing "epydoc" package!')
+
+        os.system(
+            'pydoctor'
+            ' --add-package=txKeystone'
+            ' --project-name=txKeystone'
+        )
+
+
+class TestCommand(Command):
+    description = "Run tests"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        os.system('trial txKeystone/test/')
+
+
 setup(
     name='txKeystone',
     version='0.1',
@@ -76,7 +90,8 @@ setup(
     url='https://github.com/racker/python-twisted-keystone-agent',
     cmdclass={
         'pep8': Pep8Command,
-        'apidocs': ApiDocsCommand
+        'apidocs': ApiDocsCommand,
+        'test': TestCommand
     },
     packages=['txKeystone'],
     install_requires=['Twisted'],
