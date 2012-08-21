@@ -1,4 +1,9 @@
+import os
+import sys
+
+from distutils.core import Command
 from setuptools import setup
+from subprocess import call
 
 
 class Pep8Command(Command):
