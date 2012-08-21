@@ -56,7 +56,6 @@ class KeystoneAgent(object):
         self.auth_type = auth_type
 
         self.auth_headers = {"X-Auth-Token": None, "X-Tenant-Id": None}
-        self.auth_token_expires = None
 
         self._state = self.NOT_AUTHENTICATED
         self._headers_requests = Queue()
@@ -112,8 +111,9 @@ class KeystoneAgent(object):
 
             req = self.agent.request(method,
                                      uri,
-                                     headers=headers,
-                                     bodyProducer=bodyProducer)
+                                     headers,
+                                     bodyProducer)
+
             req.addCallback(_handleResponse)
             return req
 
@@ -159,11 +159,9 @@ class KeystoneAgent(object):
 
                 tenant_id = access_token['tenant']['id'].encode('ascii')
                 auth_token = access_token['id'].encode('ascii')
-                auth_token_expires = access_token['expires'].encode('ascii')
 
                 self.auth_headers["X-Tenant-Id"] = tenant_id
                 self.auth_headers["X-Auth-Token"] = auth_token
-                self.auth_token_expires = auth_token_expires
 
                 self._state = self.AUTHENTICATED
 
