@@ -5,6 +5,33 @@ from distutils.core import Command
 from setuptools import setup
 from subprocess import call
 
+try:
+    import epydoc
+    has_epydoc = True
+except ImportError:
+    has_epydoc = False
+
+
+class ApiDocsCommand(Command):
+    description = "generate API documentation"
+    user_options = []
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        if not has_epydoc:
+            raise RuntimeError('Missing "epydoc" package!')
+
+        os.system(
+            'pydoctor'
+            ' --add-package=txKeystone'
+            ' --project-name=txKeystone'
+        )
+
 
 class Pep8Command(Command):
     description = "run pep8 script"
@@ -48,7 +75,8 @@ setup(
     license='Apache License (2.0)',
     url='https://github.com/racker/python-twisted-keystone-agent',
     cmdclass={
-        'pep8': Pep8Command
+        'pep8': Pep8Command,
+        'apidocs': ApiDocsCommand
     },
     packages=['txKeystone'],
     install_requires=['Twisted'],
