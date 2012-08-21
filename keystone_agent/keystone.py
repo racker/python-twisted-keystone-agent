@@ -27,15 +27,19 @@ class KeystoneAgent(object):
     AUTHENTICATING = 2
     AUTHENTICATED = 3
 
-    def __init__(self, agent, auth_url, auth_cred):
+    def __init__(self, agent, auth_url, auth_cred, auth_type='api_key'):
         """
         @param agent:       Agent for use by this class
         @param auth_url:    URL to use for Keystone authentication
-        @param auth_cred:   A tuple in the form ("username", "password")
+        @param auth_cred:   A tuple in the form ("username", "api_key")
+        or ("username", "password")
+        @param api_key_or_pw: Either api_key or password, depending on what
+        you want to use to authenticate.
         """
         self.agent = agent
         self.auth_url = auth_url
         self.auth_cred = auth_cred
+        self.auth_type = auth_type
 
         self.auth_headers = {"X-Auth-Token": None, "X-Tenant-Id": None}
         self.auth_token_expires = None
@@ -106,10 +110,17 @@ class KeystoneAgent(object):
         return d
 
     def _getAuthRequestBodyProducer(self):
+        if self.auth_type == "password":
+            auth_type = "passwordCredentials"
+            key_name = "password"
+        else:
+            auth_type = "RAX-KSKEY:apiKeyCredentials"
+            key_name = "apiKey"
+
         auth_dict = {"auth":
-                        {"passwordCredentials":
+                        {auth_type:
                             {"username": self.auth_cred[0],
-                             "password": self.auth_cred[1]}}}
+                             key_name: self.auth_cred[1]}}}
 
         return FileBodyProducer(StringIO(json.dumps(auth_dict)))
 
@@ -228,7 +239,8 @@ class StringIOReceiver(Protocol):
 
     def __init__(self, finished):
         """
-        @param body: Deferred to fire when all data have been aggregated.
+        @param finished: Deferred to fire when all data have been
+        aggregated.
         """
         self.buffer = StringIO()
         self.finished = finished
