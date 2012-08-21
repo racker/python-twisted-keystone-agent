@@ -22,7 +22,7 @@ class Pep8Command(Command):
             pep8
         except ImportError:
             print ('Missing "pep8" library. You can install it using pip: '
-                  'pip install pep8')
+                   'pip install pep8')
             sys.exit(1)
 
         cwd = os.getcwd()
