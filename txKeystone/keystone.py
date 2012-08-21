@@ -13,7 +13,7 @@
 # limitations under the License.
 
 import httplib
-import json
+import simplejson as json
 
 from cStringIO import StringIO
 from Queue import Queue
@@ -174,10 +174,10 @@ class KeystoneAgent(object):
                 while not self._headers_requests.empty():
                     self._headers_requests.get().callback(self.auth_headers)
 
-            except ValueError as e:
+            except ValueError:
                 # We received a bad response
-                return fail(MalformedJSONError(
-                    "Malformed keystone response received: " + e))
+                return fail(MalformedJSONError("Malformed keystone"
+                                               " response received."))
 
         def _handleAuthResponse(response):
             if response.code == httplib.OK:
