@@ -47,7 +47,7 @@ class KeystoneAgent(object):
         @param auth_url:    URL to use for Keystone authentication
         @param auth_cred:   A tuple in the form ("username", "api_key")
         or ("username", "password")
-        @param api_key_or_pw: Either api_key or password, depending on what
+        @param auth_type: Either api_key or password, depending on what
         you want to use to authenticate.
         """
         self.agent = agent
@@ -64,6 +64,20 @@ class KeystoneAgent(object):
         log.msg(format=msg, system="KeystoneAgent", **kwargs)
 
     def request(self, method, uri, headers=None, bodyProducer=None):
+        """
+        @param method: The request method to send ("GET", "POST", etc.)
+        @type method: C{str}
+        @param uri: The request URI to send
+        @type uri: C{str}
+        @param headers: The request headers to send
+        @type headers: L{Headers}
+        @param bodyProducer: An object which will produce the request body or,
+        if the request body is to be empty, None.
+        @type bodyProducer: L{IBodyProducer} provider
+        @return: A L{Deferred} which fires with the result of the request (a
+        Response instance), or fails if there is a problem setting up a
+        connection over which to issue the request.
+        """
         self.msg("request (%(method)s): %(uri)s", method=method, uri=uri)
 
         return self._request(method,
@@ -89,8 +103,8 @@ class KeystoneAgent(object):
             if response.code == httplib.UNAUTHORIZED:
                 #The auth headers were not accepted, force an update and
                 # recurse
-                self.auth_headers = \
-                    {"X-Auth-Token": None, "X-Tenant-Id": None}
+                self.auth_headers = {"X-Auth-Token": None,
+                                     "X-Tenant-Id": None}
                 self._state = self.NOT_AUTHENTICATED
 
                 return self._request(method,
@@ -117,8 +131,8 @@ class KeystoneAgent(object):
             req.addCallback(_handleResponse)
             return req
 
-        #Asynchronously get the auth headers, then make the request using
-        # them
+        # Asynchronously get the auth headers,
+        # then make the request using them
         d = self._getAuthHeaders()
         d.addCallback(_makeRequest)
         return d
@@ -227,7 +241,6 @@ class KeystoneAgent(object):
             return auth_headers_deferred
         else:
             # Bad state, fail
-
             return fail(RuntimeError("Invalid state encountered"))
 
 
@@ -248,7 +261,6 @@ class StringIOReceiver(Protocol):
     A protocol to aggregate chunked data as its received, and fire a
     callback with the aggregated data when the connection is closed.
     """
-
     def __init__(self, finished):
         """
         @param finished: Deferred to fire when all data have been
