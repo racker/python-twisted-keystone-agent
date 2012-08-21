@@ -45,7 +45,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Framework :: Twisted'
     ],
-    license='APL2',
+    license='Apache License (2.0)',
     url='https://github.com/racker/python-twisted-keystone-agent',
     cmdclass={
         'pep8': Pep8Command
