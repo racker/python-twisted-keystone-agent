@@ -1,0 +1,4 @@
+include *.txt
+include README.md
+include setup.py
+recursive-include txKeystone *
