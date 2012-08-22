@@ -30,10 +30,10 @@ class KeystoneAgent(object):
     made using this agent.
 
     @cvar auth_headers: Dictionary in the form
-    ("X-Tenant-Id": "id", "X-Auth-Token": "token") containing current
-    authentication header data.
-    @cvar MAX_RETRIES:  Maximum number of connection attempts to make
-    before failing.
+                        ("X-Tenant-Id": "id", "X-Auth-Token": "token")
+                        containing current authentication header data.
+    @cvar MAX_RETRIES: Maximum number of connection attempts to make
+                       before failing.
     """
     MAX_RETRIES = 3
 
@@ -43,12 +43,12 @@ class KeystoneAgent(object):
 
     def __init__(self, agent, auth_url, auth_cred, auth_type='api_key'):
         """
-        @param agent:       Agent for use by this class
-        @param auth_url:    URL to use for Keystone authentication
-        @param auth_cred:   A tuple in the form ("username", "api_key")
-        or ("username", "password")
+        @param agent: Agent for use by this class
+        @param auth_url: URL to use for Keystone authentication
+        @param auth_cred: A tuple in the form ("username", "api_key")
+                          or ("username", "password")
         @param auth_type: Either api_key or password, depending on what
-        you want to use to authenticate.
+                          you want to use to authenticate.
         """
         self.agent = agent
         self.auth_url = auth_url
@@ -101,8 +101,8 @@ class KeystoneAgent(object):
                      method=method, uri=uri, depth=depth)
 
             if response.code == httplib.UNAUTHORIZED:
-                #The auth headers were not accepted, force an update and
-                # recurse
+                # The auth headers were not accepted,
+                # force an update and # recurse
                 self.auth_headers = {"X-Auth-Token": None,
                                      "X-Tenant-Id": None}
                 self._state = self.NOT_AUTHENTICATED
@@ -156,13 +156,13 @@ class KeystoneAgent(object):
         """
         Get authentication headers. If we have valid header data already,
         they immediately return it.
-        If not, then get new authentication data.  If we are currently in
+        If not, then get new authentication data. If we are currently in
         the process of getting the
         header data, put this request into a queue to be handled when the
         data are received.
 
         @returns: A deferred that will eventually be called back with the
-        header data
+                  header data
         """
         def _handleAuthBody(body):
             self.msg("_handleAuthBody: %(body)s", body=body)
@@ -218,8 +218,8 @@ class KeystoneAgent(object):
             return succeed(self.auth_headers)
         elif self._state == self.NOT_AUTHENTICATED or \
              self._state == self.AUTHENTICATING:
-            # We cannot satisfy the auth header request immediately, put it
-            # in a queue
+            # We cannot satisfy the auth header request immediately,
+            # put it in a queue
             self.msg("_getAuthHeaders: defer, place in queue")
             auth_headers_deferred = Deferred()
             self._headers_requests.put(auth_headers_deferred)
@@ -229,11 +229,12 @@ class KeystoneAgent(object):
                          " authentication process")
                 # We are not authenticated, and not in the process of
                 # authenticating.
-                # Set our state to authenticating and begin the
+                # Set our state to AUTHENTICATING and begin the
                 # authentication process
                 self._state = self.AUTHENTICATING
 
-                d = self.agent.request('POST', self.auth_url,
+                d = self.agent.request('POST',
+                        self.auth_url,
                         Headers({"Content-type": ["application/json"]}),
                         self._getAuthRequestBodyProducer())
                 d.addCallback(_handleAuthResponse)
@@ -241,7 +242,7 @@ class KeystoneAgent(object):
             return auth_headers_deferred
         else:
             # Bad state, fail
-            return fail(RuntimeError("Invalid state encountered"))
+            return fail(RuntimeError("Invalid state encountered."))
 
 
 class AuthenticationError(Exception):
@@ -258,13 +259,13 @@ class MalformedJSONError(Exception):
 
 class StringIOReceiver(Protocol):
     """
-    A protocol to aggregate chunked data as its received, and fire a
+    A protocol to aggregate chunked data as it is received, and fire a
     callback with the aggregated data when the connection is closed.
     """
     def __init__(self, finished):
         """
         @param finished: Deferred to fire when all data have been
-        aggregated.
+                         aggregated.
         """
         self.buffer = StringIO()
         self.finished = finished

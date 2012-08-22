@@ -122,6 +122,7 @@ setup(
     package_dir={
         'txKeystone': 'txKeystone',
     },
-    package_data={'txKeystone': get_data_files('txKeystone', parent='txKeystone')},
+    package_data={'txKeystone': get_data_files('txKeystone',
+                                               parent='txKeystone')},
     install_requires=['Twisted'],
 )

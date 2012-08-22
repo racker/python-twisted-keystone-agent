@@ -39,6 +39,7 @@ def _filter_names(names):
                  and (not n.endswith('.py'))]
     return names
 
+
 def relative_to(base, relativee):
     """
     Gets 'relativee' relative to 'basepath'.
