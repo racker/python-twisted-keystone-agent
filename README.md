@@ -1,6 +1,8 @@
-Example Usage:
+# Twisted Python Keystone Agent
 
-```Python
+## Example Usage
+
+```python
 from twisted.internet import reactor
 from twisted.web.client import Agent
 
