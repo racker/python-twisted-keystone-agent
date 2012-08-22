@@ -1,5 +1,7 @@
 # Twisted Python Keystone Agent
 
+[![Build Status](https://secure.travis-ci.org/racker/python-twisted-keystone-agent.png)](http://travis-ci.org/racker/python-twisted-keystone-agent)
+
 ## Example Usage
 
 ```python
