@@ -81,6 +81,7 @@ setup(
                 ' to Keystone and uses the Keystone auth credentials' +
                 ' to authenticate against requested urls.',
     author='Rackspace Hosting, Inc.',
+    author_email='shawn.smith@rackspace.com',
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: Apache Software License',
