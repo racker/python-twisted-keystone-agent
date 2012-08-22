@@ -76,7 +76,7 @@ class TestCommand(Command):
 
 setup(
     name='txKeystone',
-    version='0.1',
+    version='0.1.0',
     description='A Twisted Agent implementation which authenticates' +
                 ' to Keystone and uses the Keystone auth credentials' +
                 ' to authenticate against requested urls.',
