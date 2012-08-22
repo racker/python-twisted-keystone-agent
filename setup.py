@@ -12,6 +12,9 @@ except ImportError:
     has_epydoc = False
 
 
+# Commands based on Libcloud setup.py:
+# https://github.com/apache/libcloud/blob/trunk/setup.py
+
 class Pep8Command(Command):
     description = "Run pep8 script"
     user_options = []
@@ -84,6 +87,7 @@ setup(
         'Programming Language :: Python :: 2.5',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: Implementation :: PyPy',
         'Framework :: Twisted'
     ],
     license='Apache License (2.0)',
