@@ -5,11 +5,15 @@ from distutils.core import Command
 from setuptools import setup
 from subprocess import call
 
+from utils.dist import get_packages, get_data_files
+
 try:
     import epydoc
     has_epydoc = True
 except ImportError:
     has_epydoc = False
+
+EXCLUDE_NAMES = []
 
 
 # Commands based on Libcloud setup.py:
@@ -73,7 +77,6 @@ class TestCommand(Command):
     def run(self):
         os.system('trial txKeystone/test/')
 
-
 pre_python26 = (sys.version_info[0] == 2 and sys.version_info[1] < 6)
 
 setup(
@@ -101,6 +104,10 @@ setup(
         'apidocs': ApiDocsCommand,
         'test': TestCommand
     },
-    packages=['txKeystone'],
+    packages=get_packages('txKeystone'),
+    package_dir={
+        'txKeystone': 'txKeystone',
+    },
+    package_data={'txKeystone': get_data_files('txKeystone', parent='txKeystone')},
     install_requires=['Twisted'],
 )
