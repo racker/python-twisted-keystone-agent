@@ -60,8 +60,10 @@ class KeystoneAgentTests(TestCase, FakeReactorAndConnectMixin):
         self.agent.request.side_effect = _do_response
 
     def respond(self, code, phrase, headers=None, body=None):
-        self._responses.pop().callback(
-           DummyResponse(code, phrase, headers, body))
+        self._responses.pop().callback(DummyResponse(code,
+                                                     phrase,
+                                                     headers,
+                                                     body))
 
     def assertRequest(self, agent, method, url, headers, body):
         call = self.agent.request.mock_calls[-1][1]

@@ -146,9 +146,9 @@ class KeystoneAgent(object):
             key_name = "apiKey"
 
         auth_dict = {"auth":
-                        {auth_type:
-                            {"username": self.auth_cred[0],
-                             key_name: self.auth_cred[1]}}}
+                     {auth_type:
+                      {"username": self.auth_cred[0],
+                       key_name: self.auth_cred[1]}}}
 
         return FileBodyProducer(StringIO(json.dumps(auth_dict)))
 
@@ -204,8 +204,10 @@ class KeystoneAgent(object):
             else:
                 self.msg("_handleAuthResponse: %(response)s rejected",
                          response=response)
-                return fail(KeystoneAuthenticationError("Keystone"
-                    " authentication credentials rejected"))
+                return fail(
+                    KeystoneAuthenticationError("Keystone"
+                                                " authentication credentials"
+                                                " rejected"))
 
         self.msg("_getAuthHeaders: state is %(state)s", state=self._state)
 
@@ -216,8 +218,8 @@ class KeystoneAgent(object):
                      headers=self.auth_headers)
 
             return succeed(self.auth_headers)
-        elif self._state == self.NOT_AUTHENTICATED or \
-             self._state == self.AUTHENTICATING:
+        elif (self._state == self.NOT_AUTHENTICATED or
+              self._state == self.AUTHENTICATING):
             # We cannot satisfy the auth header request immediately,
             # put it in a queue
             self.msg("_getAuthHeaders: defer, place in queue")
@@ -234,9 +236,11 @@ class KeystoneAgent(object):
                 self._state = self.AUTHENTICATING
 
                 d = self.agent.request('POST',
-                        self.auth_url,
-                        Headers({"Content-type": ["application/json"]}),
-                        self._getAuthRequestBodyProducer())
+                                       self.auth_url,
+                                       Headers({
+                                           "Content-type": ["application/json"]
+                                       }),
+                                       self._getAuthRequestBodyProducer())
                 d.addCallback(_handleAuthResponse)
 
             return auth_headers_deferred
