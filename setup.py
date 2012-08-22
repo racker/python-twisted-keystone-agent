@@ -74,6 +74,8 @@ class TestCommand(Command):
         os.system('trial txKeystone/test/')
 
 
+pre_python26 = (sys.version_info[0] == 2 and sys.version_info[1] < 6)
+
 setup(
     name='txKeystone',
     version='0.1.0',
@@ -82,6 +84,7 @@ setup(
                 ' to authenticate against requested urls.',
     author='Rackspace Hosting, Inc.',
     author_email='shawn.smith@rackspace.com',
+    requires=([], ['simplejson'],)[pre_python26],
     classifiers=[
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: Apache Software License',
