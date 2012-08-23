@@ -13,7 +13,11 @@
 # limitations under the License.
 
 import httplib
-import simplejson as json
+
+try:
+    import simplejson as json
+except:
+    import json
 
 from cStringIO import StringIO
 from Queue import Queue
