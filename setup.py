@@ -57,6 +57,7 @@ class Pep8Command(Command):
         sys.exit(retcode)
 
 
+
 class ApiDocsCommand(Command):
     description = "generate API documentation"
     user_options = []
@@ -89,7 +90,9 @@ class TestCommand(Command):
         pass
 
     def run(self):
-        os.system('trial txKeystone/test/')
+        cwd = os.getcwd()
+        retcode = call(('trial %s/txKeystone/test/' % (cwd)).split(' '))
+        sys.exit(retcode)
 
 pre_python26 = (sys.version_info[0] == 2 and sys.version_info[1] < 6)
 
