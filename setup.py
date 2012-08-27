@@ -57,7 +57,6 @@ class Pep8Command(Command):
         sys.exit(retcode)
 
 
-
 class ApiDocsCommand(Command):
     description = "generate API documentation"
     user_options = []
