@@ -90,7 +90,7 @@ class TestCommand(Command):
 
     def run(self):
         cwd = os.getcwd()
-        retcode = call(('trial %s/txKeystone/test/' % (cwd)).split(' '))
+        retcode = call(('trial %s/txKeystone/tests/' % (cwd)).split(' '))
         sys.exit(retcode)
 
 pre_python26 = (sys.version_info[0] == 2 and sys.version_info[1] < 6)
