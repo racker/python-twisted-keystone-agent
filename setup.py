@@ -27,9 +27,6 @@ try:
 except ImportError:
     has_epydoc = False
 
-EXCLUDE_NAMES = []
-
-
 # Commands based on Libcloud setup.py:
 # https://github.com/apache/libcloud/blob/trunk/setup.py
 
