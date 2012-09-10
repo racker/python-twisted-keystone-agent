@@ -156,6 +156,9 @@ class KeystoneAgent(object):
 
         return FileBodyProducer(StringIO(json.dumps(auth_dict)))
 
+    def getAuthHeaders(self):
+        return self._getAuthHeaders()
+
     def _getAuthHeaders(self):
         """
         Get authentication headers. If we have valid header data already,
