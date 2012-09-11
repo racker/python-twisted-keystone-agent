@@ -249,6 +249,7 @@ class KeystoneAgent(object):
                                        }),
                                        self._getAuthRequestBodyProducer())
                 d.addCallback(_handleAuthResponse)
+                return d
 
             return auth_headers_deferred
         else:
