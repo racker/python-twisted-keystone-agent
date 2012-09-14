@@ -123,5 +123,5 @@ setup(
     },
     package_data={'txKeystone': get_data_files('txKeystone',
                                                parent='txKeystone')},
-    install_requires=['Twisted'],
+    install_requires=['Twisted >= 9.0.0'],
 )
