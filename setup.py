@@ -94,7 +94,7 @@ pre_python26 = (sys.version_info[0] == 2 and sys.version_info[1] < 6)
 
 setup(
     name='txKeystone',
-    version='0.1.1',
+    version='0.1.2',
     description='A Twisted Agent implementation which authenticates' +
                 ' to Keystone and uses the Keystone auth credentials' +
                 ' to authenticate against requested urls.',
