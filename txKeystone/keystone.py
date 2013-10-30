@@ -45,7 +45,8 @@ class KeystoneAgent(object):
     AUTHENTICATING = 2
     AUTHENTICATED = 3
 
-    def __init__(self, agent, auth_url, auth_cred, auth_type='api_key'):
+    def __init__(self, agent, auth_url, auth_cred, auth_type='api_key',
+                 verbose=False):
         """
         @param agent: Agent for use by this class
         @param auth_url: URL to use for Keystone authentication
@@ -53,11 +54,13 @@ class KeystoneAgent(object):
                           or ("username", "password")
         @param auth_type: Either api_key or password, depending on what
                           you want to use to authenticate.
+        @param verbose: Enable verbose logging, False by default.
         """
         self.agent = agent
         self.auth_url = auth_url
         self.auth_cred = auth_cred
         self.auth_type = auth_type
+        self.verbose = verbose
 
         self.auth_headers = {"X-Auth-Token": None, "X-Tenant-Id": None}
 
@@ -65,7 +68,8 @@ class KeystoneAgent(object):
         self._headers_requests = Queue()
 
     def msg(self, msg, **kwargs):
-        log.msg(format=msg, system="KeystoneAgent", **kwargs)
+        if self.verbose:
+            log.msg(format=msg, system="KeystoneAgent", **kwargs)
 
     def request(self, method, uri, headers=None, bodyProducer=None):
         """
